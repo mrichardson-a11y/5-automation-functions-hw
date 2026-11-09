@@ -1,7 +1,7 @@
 #PSYC 259 Homework - Writing functions and iteration
 #For full credit, answer at least 5/7 questions
 
-#List names of students collaborating with: 
+#List names of students collaborating with: Maddy, Krista, Aylin
 
 ### SETUP: RUN THIS BEFORE STARTING ----------
 library(tidyverse)
@@ -19,14 +19,25 @@ ds <- tibble(id, x, y, z)
 #The function should take a vector as input and return the replaced-vector as an output
 #Then, run the function on x and save the results to a new vector "x_replace" to show it worked
 
+limit_replace <- function(MR) {
+  ifelse(MR > 8 | MR < 2, NA, MR ) ## MR is the placeholder for the vector
+} 
 
+x_replace <- limit_replace(x)
+x_replace
 ### Question 2 ---------- 
 
 #Make a new version of limit_replace includes arguments for a lower boundary and an upper boundary
 #so that the limits can be specified (instead of being hard coded as 2 and 8)
 #Run the function on vector y with boundaries 4 and 6, saving the results to a new vector "y_replace"
 
+limit_replace_new <- function(MR, lower_bound, upper_bound)  {
+  ifelse(MR < lower_bound|MR > upper_bound, NA, MR)
+}
 
+y_replace <- limit_replace_new(y, 4, 6)
+y_replace
+ 
 ### Question 3 ----------
 
 #Write a function called "plus_minus_SD" that can take one of the vectors (x/y/z) as input
@@ -36,11 +47,24 @@ ds <- tibble(id, x, y, z)
 #The output should be a named list two values, lower and upper.
 #Running plus_minus_SD(x) should produce: $lower 2.142724 $upper 8.048324
 
+plus_minus_SD <- function(MR, num_of_SDs = NULL) {
+  num <- ifelse(is.null(num_of_SDs), 1, num_of_SDs)
+  SD <- sd(MR)
+  mean <- mean(MR)
+  SDs <- num * SD
+  upper <- mean + SDs
+  lower <- mean - SDs
+  list <- c(lower, upper)
+  return(list)
+}
 
+plus_minus_SD(x)
 ### Question 4 ----------
 # Use a map function to run the new function on x, y, and z with 1 SD
 
+MR_vectors <- list(x, y, z)
 
+map(MR_vectors, plus_minus_SD)
 ### Question 5 ----------
 
 # Write an another new version of limit_replace
@@ -60,7 +84,6 @@ ds <- tibble(id, x, y, z)
 # summary stats to a file named "SPECIESNAME_summary.csv"
 
 ds_iris <- iris
-
 
 ### Question 7 ----------
 # Use some type of iteration to run the species_summary() function 
